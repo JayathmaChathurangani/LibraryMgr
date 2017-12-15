@@ -7,7 +7,7 @@ import { Card, CardTitle } from 'material-ui/Card';
 import LoadLibraryNames from '../../../services/dependencyManager/database/LoadLibraryNames';
 import DropDownLibraryVersions from '../DropDowns/DropDownLibraryVersions';
 import ToolbarLibraryNameVersion from '../Toolbars/ToolBarLibraryNameVersion';
-import ProductsUsedByLibraryTable from '../Tables/ProductsForLibrary';
+import ProductComponentsTable from '../Tables/ProductsAndComponentsForLibrary';
 
 const array = [];
 /**
@@ -170,7 +170,7 @@ export default class ViewByLibrary extends Component {
                                 librType={this.state.libType}
                             />
                         </div>
-                        <ProductsUsedByLibraryTable
+                        <ProductComponentsTable
                             renderCondition={this.state.conditionRender}
                             nameLibrary={this.state.lName}
                             versionLibrary={this.state.lVersion}

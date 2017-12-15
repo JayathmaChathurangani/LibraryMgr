@@ -8,12 +8,6 @@ import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
 * @description Get ProductName&Version
 */
 class ToolbarProductNameVersion extends Component {
-    /**
-     * @class ToolbarProductNameVersion
-     * @extends {Component}
-     * @param {any} props props for constructor
-     * @description Sample React component
-     */
     render() {
         return (
             <div>

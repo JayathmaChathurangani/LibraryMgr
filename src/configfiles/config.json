@@ -7,5 +7,12 @@
     "productLibrary":"https://localhost:9099/LMDependencyManager/product/library/",
     "libraryGroupIDArtifactID":"https://localhost:9099/LMDependencyManager/library/artifact/group/",
     "routerService":"https://localhost:9091/dependencyManager/router/",
-    "productsUsingLibrary":"https://localhost:9099/LMDependencyManager/library/product/"
+    "productsUsingLibrary":"https://localhost:9099/LMDependencyManager/library/product/",
+    "productsComponentsUsingLibrary":"https://localhost:9099/LMDependencyManager/library/view/",
+    "componentNameDropDown":"https://localhost:9099/LMDependencyManager/component/nameDropDown",
+    "componentVersion":"https://localhost:9099/LMDependencyManager/component/versionDropDown/",
+    "productCompNames":"https://localhost:9099/LMDependencyManager/view/productandcomponentlist",
+    "librariesofComponent":"https://localhost:9099/LMDependencyManager/view/component/librarylist/",
+    "librariesofProduct":"https://localhost:9099/LMDependencyManager/view/product/librarylist/",
+    "compDetails":"https://localhost:9099/LMDependencyManager/view/component/"
 }

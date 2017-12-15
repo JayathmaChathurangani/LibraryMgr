@@ -134,7 +134,7 @@ class ToolBarLibraryNameVersion extends Component {
                                   contentStyle={customContentStyle}
                                   autoScrollBodyContent={true}
                             >
-                                Click (+) to Expand
+                                Click (+) to View Transitive Dependencies if available
                                 <div style={{ width: '100%', height: 2000, backgroundColor: '#FFFF8D', color: '#212121' }}>
                                     <SortableTree
                                         style={{ backgroundColor: '#FAFAF' }}

@@ -32,6 +32,7 @@ import WaitingRequests from './scenes/common/WaitingRequests';
 import ErrorPage from './scenes/common/ErrorPage';
 import ViewByProduct from './scenes/dependencymanager/Views/ViewByProduct';
 import ViewByLibrary from './scenes/dependencymanager/Views/ViewByLibrary';
+import ViewByProductComponent from './scenes/dependencymanager/Views/ViewByProductOrComponent';
 import Welcome from './scenes/dependencymanager/Views/Welcome';
 
 /**
@@ -61,6 +62,7 @@ class App extends Component {
                     <Route path={'rejectLibrary'} component={RejectLibrary} />
                     <Route path={'ViewbyProduct'} component={ViewByProduct} />
                     <Route path={'ViewbyLibrary'} component={ViewByLibrary} />
+                    <Route path={'ViewbyProductComponent'} component={ViewByProductComponent} />
                     <Route path={'Welcome'} component={Welcome} />
                 </Route>
                 <Route path={'/'} component={Main} />
