@@ -46,7 +46,6 @@ class LeftNav extends Component {
                         <br />
                     </Link>
                     <ul className="dropdown-menu">
-                        <li><Link to={'/app/ViewByProduct'} ><span><i className="fa fa-plus-square-o" aria-hidden="true" /></span>&nbsp;&nbsp;View By Product</Link></li>
                         <li><Link to={'/app/ViewByLibrary'} ><span><i className="fa fa-plus-square-o" aria-hidden="true" /></span>&nbsp;&nbsp;View By Library</Link></li>
                         <li><Link to={'/app/ViewbyProductComponent'} ><span><i className="fa fa-plus-square-o" aria-hidden="true" /></span>&nbsp;&nbsp;View By Product/Component</Link></li>
                     </ul>
