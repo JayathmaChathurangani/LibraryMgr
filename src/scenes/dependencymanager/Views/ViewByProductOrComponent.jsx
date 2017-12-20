@@ -11,6 +11,7 @@ import ToolbarProductNameVersion from '../Toolbars/ToolBarProductNameVersion';
 import ToolbarComponent from '../Toolbars/ToolBarComponentNameVersion';
 import TableComponentLibraries from '../Tables/LibrariesOfComponent';
 import TableProductLibraries from '../Tables/LibrariesOfProduct';
+import LoadingScreen from '../Common/LoadingScreen';
 
 const array = [];
 /**
@@ -33,6 +34,7 @@ export default class ViewByProductOrComponent extends Component {
             totalArrayLength: '',
             typeSelected: '',
             isNameSelected: '',
+            loadUI: false,
             type: '',
             dataD: [],
             name: 'Make Selections',
@@ -107,7 +109,10 @@ export default class ViewByProductOrComponent extends Component {
                         ),
                     };
                 }
-                this.setState({ productArrayLength: response.products.length });
+                this.setState({
+                    productArrayLength: response.products.length,
+                    loadUI: true,
+                });
             }
             if (response.components.length > 0) {
                 const totalLength = response.products.length + response.components.length;
@@ -136,84 +141,96 @@ export default class ViewByProductOrComponent extends Component {
      * @return div
      */
     render() {
+        let returnView;
+        if (this.state.loadUI) {
+            returnView = (
+                <div style={{ backgroundColor: '#212121' }}>
+                    <div>
+                        {/* eslint-disable */}
+                        <Card>
+                            <h2 className="text-center">View By Product/Component</h2>
+                            <CardTitle 
+                                className="text-center"
+                                subtitle="Libraries of the selected Product/Component are displayed" 
+                            />
+                        </Card>
+                        {/* eslint-enable */}
+                    </div>
+                    <div style={{ backgroundColor: '#212121' }}>
+                        <div
+                            className="col-xs-6 col-sm-6 col-lg-6 text-right"
+                            style={{ backgroundColor: '#212121' }}
+                        >
+                            <AutoComplete
+                                floatingLabelText="Search"
+                                menuStyle={{ maxHeight: '300px', overflowY: 'auto' }}
+                                openOnFocus={true}//eslint-disable-line
+                                searchText={this.state.searchText}
+                                onUpdateInput={this.handleUpdateInput}
+                                onNewRequest={this.setName}
+                                filter={(searchText, key) => (key.indexOf(searchText) !== -1)}
+                                dataSource={this.state.data}
+                                fullWidth={true}//eslint-disable-line
+                            />
+                        </div>
+                        <div
+                            className="col-xs-6 col-sm-6 col-lg-6 text-left"
+                            style={{ backgroundColor: '#212121' }}
+                        >
+                            <DropDownProductComponentVersions
+                                loadDropDown={this.state.loadV}
+                                selectedType={this.state.typeSelected}
+                                Name={this.state.searchText}
+                                setVersion={this.setVersion.bind(this)}//eslint-disable-line
+                            />
+                        </div>
+                        <div style={{ backgroundColor: '#212121' }} />
+                    </div>
+                    <div>
+                        {this.state.isNameSelected ?
+                            <div>
+                                {this.state.typeSelected === 'Product' ?
+                                    <ToolbarProductNameVersion
+                                        nameProduct={this.state.name}
+                                        versionProduct={this.state.version}
+                                    />
+                                    :
+                                    <ToolbarComponent
+                                        compName={this.state.name}
+                                        compVersion={this.state.version}
+                                    />
+                                }
+                            </div>
+                            :
+                            <div />
+                        }
+                    </div>
+                    {this.state.typeSelected === 'Product' ?
+                        <TableProductLibraries
+                            renderCondition={this.state.tableRender}
+                            nameComp={this.state.name}
+                            versionComp={this.state.version}
+                        />
+                        :
+                        <TableComponentLibraries
+                            renderCondition={this.state.tableRender}
+                            nameComp={this.state.name}
+                            versionComp={this.state.version}
+                        />
+                    }
+                </div>
+            );
+        } else {
+            returnView = (
+                <div>
+                    <LoadingScreen />
+                </div>
+            );
+        }
         return (
             <div>
                 <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-                    <div style={{ backgroundColor: '#212121' }}>
-                        <div>
-                            {/* eslint-disable */}
-                            <Card>
-                                <h2 className="text-center">View By Product/Component</h2>
-                                <CardTitle 
-                                    className="text-center"
-                                    subtitle="Libraries of the selected Product/Component are displayed" 
-                                />
-                            </Card>
-                            {/* eslint-enable */}
-                        </div>
-                        <div style={{ backgroundColor: '#212121' }}>
-                            <div
-                                className="col-xs-6 col-sm-6 col-lg-6 text-right"
-                                style={{ backgroundColor: '#212121' }}
-                            >
-                                <AutoComplete
-                                    floatingLabelText="Search"
-                                    menuStyle={{ maxHeight: '300px', overflowY: 'auto' }}
-                                    openOnFocus={true}//eslint-disable-line
-                                    searchText={this.state.searchText}
-                                    onUpdateInput={this.handleUpdateInput}
-                                    onNewRequest={this.setName}
-                                    filter={(searchText, key) => (key.indexOf(searchText) !== -1)}
-                                    dataSource={this.state.data}
-                                    fullWidth={true}//eslint-disable-line
-                                />
-                            </div>
-                            <div
-                                className="col-xs-6 col-sm-6 col-lg-6 text-left"
-                                style={{ backgroundColor: '#212121' }}
-                            >
-                                <DropDownProductComponentVersions
-                                    loadDropDown={this.state.loadV}
-                                    selectedType={this.state.typeSelected}
-                                    Name={this.state.searchText}
-                                    setVersion={this.setVersion.bind(this)}//eslint-disable-line
-                                />
-                            </div>
-                            <div style={{ backgroundColor: '#212121' }} />
-                        </div>
-                        <div>
-                            {this.state.isNameSelected ?
-                                <div>
-                                    {this.state.typeSelected === 'Product' ?
-                                        <ToolbarProductNameVersion
-                                            nameProduct={this.state.name}
-                                            versionProduct={this.state.version}
-                                        />
-                                        :
-                                        <ToolbarComponent
-                                            compName={this.state.name}
-                                            compVersion={this.state.version}
-                                        />
-                                    }
-                                </div>
-                                :
-                                <div />
-                            }
-                        </div>
-                        {this.state.typeSelected === 'Product' ?
-                            <TableProductLibraries
-                                renderCondition={this.state.tableRender}
-                                nameComp={this.state.name}
-                                versionComp={this.state.version}
-                            />
-                            :
-                            <TableComponentLibraries
-                                renderCondition={this.state.tableRender}
-                                nameComp={this.state.name}
-                                versionComp={this.state.version}
-                            />
-                        }
-                    </div>
+                    {returnView}
                 </MuiThemeProvider>
             </div>
         );

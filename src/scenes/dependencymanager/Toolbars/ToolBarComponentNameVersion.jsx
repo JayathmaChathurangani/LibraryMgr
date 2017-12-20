@@ -99,6 +99,7 @@ class ToolBarComponentNameVersion extends Component {
                             />
                             <Dialog
                                 title="List Of Products Using the Component"
+
                                 actions={actions}
                                 modal={true}
                                 open={this.state.open}
@@ -107,7 +108,7 @@ class ToolBarComponentNameVersion extends Component {
                                 autoScrollBodyContent={true}
                             >
                                 <div style={{ width: '100%', height: '100%', backgroundColor: '#212121', color: '#FAFAFA' }}>
-                                    <p>{this.state.numProduct} products are present</p>
+                                    <p>{this.state.numProduct} products are using {this.props.compName} (Version:{this.props.compVersion})</p>
                                     <List>
                                         {this.state.data}
                                     </List>

@@ -13,6 +13,7 @@ import {
 import Chip from 'material-ui/Chip';
 import ProductsComponentsOfLibrary
     from '../../../services/dependencyManager/database/LoadProductsAndComponentsUsingLibrary';
+import LoadingScreen from '../Common/LoadingScreen';
 
 const columns = [
     { name: 'Number', title: '' },
@@ -35,6 +36,7 @@ export default class ProductsAndComponentsForLibrary extends React.PureComponent
         super(props);
         this.state = {
             tRows: [],
+            showTable: false,
             columnWidths: {
                 Number: 100,
                 ProductName: 350,
@@ -58,6 +60,7 @@ export default class ProductsAndComponentsForLibrary extends React.PureComponent
                 libraryName: props.nameLibrary,//eslint-disable-line
                 libraryVersion: props.versionLibrary,//eslint-disable-line
                 numberOfRecords: 0,
+                showTable: false,
             });
             this.loadTable(props.nameLibrary, props.versionLibrary);
         }
@@ -87,43 +90,50 @@ export default class ProductsAndComponentsForLibrary extends React.PureComponent
             this.setState({
                 tRows: array,
                 numberOfRecords: response.data.length,
+                showTable: true,
             });
         });
     }
     render() {
         let returnView;
         if (this.props.renderCondition) {
-            returnView = (
-                <div>
-                    {this.state.numberOfRecords > 0 ?
-                        <div>
+            if (this.state.showTable) {
+                returnView = (
+                    <div>
+                        {this.state.numberOfRecords > 0 ?
                             <div>
-                                <Chip>
-                                    {this.state.numberOfRecords} results are returned
-                                </Chip>
+                                <div>
+                                    <Chip>
+                                        {this.state.numberOfRecords} results are returned
+                                    </Chip>
+                                </div>
+                                <Grid
+                                    rows={this.state.tRows}
+                                    columns={columns}
+                                >
+                                    <PagingState
+                                        defaultCurrentPage={0}
+                                        pageSize={12}
+                                    />
+                                    <LocalPaging />
+                                    <VirtualTableView />
+                                    <TableColumnResizing defaultColumnWidths={this.state.columnWidths} />
+                                    <TableHeaderRow allowResizing />
+                                    <PagingPanel />
+                                </Grid>
                             </div>
-                            <Grid
-                                rows={this.state.tRows}
-                                columns={columns}
-                            >
-                                <PagingState
-                                    defaultCurrentPage={0}
-                                    pageSize={12}
-                                />
-                                <LocalPaging />
-                                <VirtualTableView />
-                                <TableColumnResizing defaultColumnWidths={this.state.columnWidths} />
-                                <TableHeaderRow allowResizing />
-                                <PagingPanel />
-                            </Grid>
-                        </div>
-                        :
-                        <Chip>
-                            No Libraries Found
-                        </Chip>
-                    }
-                </div>
-            );
+                            :
+                            <Chip>
+                                No Libraries Found
+                            </Chip>
+                        }
+                    </div>
+                );
+            } else {
+                returnView = (
+                    <LoadingScreen />
+                );
+            }
         }
         return (
             <div>

@@ -8,6 +8,7 @@ import LoadLibraryNames from '../../../services/dependencyManager/database/LoadL
 import DropDownLibraryVersions from '../DropDowns/DropDownLibraryVersions';
 import ToolbarLibraryNameVersion from '../Toolbars/ToolBarLibraryNameVersion';
 import ProductComponentsTable from '../Tables/ProductsAndComponentsForLibrary';
+import LoadingScreen from '../Common/LoadingScreen';
 
 const array = [];
 /**
@@ -26,6 +27,7 @@ export default class ViewByLibrary extends Component {
         super(props);
         this.state = { data: [],
             searchText: '',
+            loadUI: false,
             dataD: [],
             lName: 'No Library is Selected',
             lVersion: 'No Version is Selected',
@@ -115,11 +117,15 @@ export default class ViewByLibrary extends Component {
             }
             this.setState({ data: array });
         });
+        this.setState({
+            loadUI: true,
+        });
     }
     render() {
-        return (
-            <div>
-                <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+        let returnView;
+        if (this.state.loadUI) {
+            returnView = (
+                <div>
                     <div style={{ backgroundColor: '#212121' }}>
                         <div>
                             {/* eslint-disable */}
@@ -178,6 +184,19 @@ export default class ViewByLibrary extends Component {
                             libArtifactID={this.state.lArtifactID}
                         />
                     </div>
+                </div>
+            );
+        } else {
+            returnView = (
+                <div>
+                    <LoadingScreen />
+                </div>
+            );
+        }
+        return (
+            <div>
+                <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+                    {returnView}
                 </MuiThemeProvider>
             </div>
         );

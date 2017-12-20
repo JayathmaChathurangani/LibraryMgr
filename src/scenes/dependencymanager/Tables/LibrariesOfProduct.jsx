@@ -13,6 +13,7 @@ import {
 import Chip from 'material-ui/Chip';
 import LibrariesOfProd
     from '../../../services/dependencyManager/database/LoadProductLibraries';
+import LoadingScreen from '../Common/LoadingScreen';
 
 const columns = [
     { name: 'Count', title: '' },
@@ -35,12 +36,13 @@ export default class LibrariesOfProduct extends React.PureComponent {
         super(props);
         this.state = {
             tRows: [],
+            showTable: false,
             columnWidths: {
-                Count: 50,
+                Count: 100,
                 LibraryName: 400,
                 LibraryVersion: 200,
                 LibraryType: 200,
-                LatestVersion: 400,
+                LatestVersion: 300,
                 GroupID: 200,
                 ArtifactID: 200,
             },
@@ -57,6 +59,7 @@ export default class LibrariesOfProduct extends React.PureComponent {
                 prodName: props.nameComp,//eslint-disable-line
                 prodVersion: props.versionComp,//eslint-disable-line
                 numberOfRecords: 0,
+                showTable: false,
             });
             this.loadTable(props.nameComp, props.versionComp);
         }
@@ -83,41 +86,51 @@ export default class LibrariesOfProduct extends React.PureComponent {
             } else {
                 array[0] = 'No results';
             }
-            this.setState({ tRows: array, numberOfRecords: response.Libraries.length });
+            this.setState({
+                tRows: array,
+                numberOfRecords: response.Libraries.length,
+                showTable: true,
+            });
         });
     }
     render() {
         let returnView;
         if (this.props.renderCondition) {
-            returnView = (
-                <div>
-                    {this.state.numberOfRecords > 0 ?
-                        <div>
+            if (this.state.showTable) {
+                returnView = (
+                    <div>
+                        {this.state.numberOfRecords > 0 ?
+                            <div>
+                                <Chip>
+                                    {this.state.numberOfRecords} results are returned
+                                </Chip>
+                                <Grid
+                                    rows={this.state.tRows}
+                                    columns={columns}
+                                >
+                                    <PagingState
+                                        defaultCurrentPage={0}
+                                        pageSize={12}
+                                    />
+                                    <LocalPaging />
+                                    <VirtualTableView />
+                                    <TableColumnResizing defaultColumnWidths={this.state.columnWidths} />
+                                    <TableHeaderRow allowResizing />
+                                    <PagingPanel />
+                                </Grid>
+                            </div>
+                            :
                             <Chip>
-                                {this.state.numberOfRecords} results are returned
+                                No Libraries Found
                             </Chip>
-                            <Grid
-                                rows={this.state.tRows}
-                                columns={columns}
-                            >
-                                <PagingState
-                                    defaultCurrentPage={0}
-                                    pageSize={12}
-                                />
-                                <LocalPaging />
-                                <VirtualTableView />
-                                <TableColumnResizing defaultColumnWidths={this.state.columnWidths} />
-                                <TableHeaderRow allowResizing />
-                                <PagingPanel />
-                            </Grid>
-                        </div>
-                        :
-                        <Chip>
-                            No Libraries Found
-                        </Chip>
-                    }
-                </div>
-            );
+                        }
+                    </div>
+                );
+            } else {
+                returnView = (
+                    <LoadingScreen />
+                );
+            }
         }
         return (
             <div>
